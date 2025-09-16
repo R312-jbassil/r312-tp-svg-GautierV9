@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
+
 @plugin "daisyui/theme" {
-  name: "light";
+  name: "TPIASVG";
   default: false;
   prefersdark: false;
   color-scheme: "light";
@@ -13,7 +14,7 @@
   --color-primary-content: oklch(96% 0.018 272.314);
   --color-secondary: oklch(82% 0.119 306.383);
   --color-secondary-content: oklch(97% 0.021 166.113);
-  --color-accent: oklch(51% 0.262 276.966);
+  --color-accent: oklch(71% 0.202 349.761);
   --color-accent-content: oklch(96% 0.018 272.314);
   --color-neutral: oklch(51% 0.222 16.935);
   --color-neutral-content: oklch(96% 0.015 12.422);
@@ -34,3 +35,4 @@
   --depth: 1;
   --noise: 1;
 }
+
