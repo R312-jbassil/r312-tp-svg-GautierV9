@@ -1,0 +1,74 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout>
+
+<main data-theme="TPIASVG" class="min-h-screen bg-base-100 grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+
+  <!-- Carte Code généré -->
+  <div class="card bg-base-200 shadow-xl rounded-2xl p-4">
+    <h2 class="text-xl font-semibold mb-4 text-white">Code généré</h2>
+    <pre class="bg-base-300 p-4 rounded-lg overflow-x-auto h-64 text-pink-200">
+      <code id="generatedCode">Le code SVG apparaîtra ici !</code>
+    </pre>
+  </div>
+
+  <!-- Carte Aperçu -->
+  <div class="card bg-base-200 shadow-xl rounded-2xl p-4 flex flex-col items-center justify-center">
+    <h2 class="text-xl font-semibold mb-4 text-white">Aperçu SVG</h2>
+    <div id="svgPreview" class="bg-neutral border border-base-300 rounded-2xl w-full h-64 flex items-center justify-center">
+      <span class="text-gray-400">Le SVG apparaîtra ici !</span>
+    </div>
+  </div>
+
+  <!-- Carte Prompt en bas full width -->
+  <div class="card bg-base-200 shadow-xl rounded-2xl p-4 col-span-1 md:col-span-2 w-full">
+    <h2 class="text-xl font-semibold mb-4 text-white">Entrer un prompt ici !</h2>
+    <textarea 
+      id="prompt" 
+      class="textarea textarea-bordered w-full h-32 mb-4 bg-base-300 text-white placeholder-gray-400" 
+      placeholder="Écris ton prompt ici..."></textarea>
+    <button id="generateBtn" class="btn btn-primary w-full rounded-2xl">Générer</button>
+  </div>
+
+</main>
+</Layout>
+    
+
+<script>
+    //@ts-nocheck
+	
+	async function generateSVG(prompt) {
+		console.log('Generating SVG for prompt:', prompt);
+		const res = await fetch('/api/generateSVG', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ prompt }),
+		});
+		const data = await res.json();
+		return data.svg;
+	}
+
+	async function handleSubmit() {
+        let prompt = "";
+        let svgCode = "";
+        const promptElement = document.getElementById("prompt");
+        prompt = promptElement ? promptElement.value : "";
+        console.log('submitted: ', prompt); // message affiché sur votre console d'inspecteur dans le navigateur
+        const svgContainer = document.getElementById("svgPreview");
+        let svgOutput = document.getElementById("generatedCode");
+        svgContainer.innerHTML = `<span class="loading loading-ring loading-xl"></span>`;
+        generateButton.disabled = true;
+        svgCode = await generateSVG(prompt);
+        console.log('svgCode: ', svgCode);
+        svgOutput.textContent = svgCode;
+        svgContainer.innerHTML = svgCode;
+        generateButton.disabled = false;
+
+	}
+    const generateButton = document.getElementById("generateBtn");
+	if (generateButton) {
+		generateButton.addEventListener("click", handleSubmit);
+	}
+</script>
